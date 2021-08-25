@@ -1,5 +1,18 @@
-const WalletFactory = artifacts.require("WalletFactory");
+const MultiSigWallet = artifacts.require("MultiSigWallet")
 
-module.exports = function (deployer) {
-  deployer.deploy(WalletFactory);
-};
+// TODO testnet accounts
+module.exports = function(deployer, network, accounts) {
+  if (network === "main") {
+    return
+  }
+
+  console.log("-----------------------------")
+  console.log(accounts)
+  console.log("-----------------------------")
+
+  // getting owners from truffle
+  const owners = accounts.slice(0, 3)
+  const numConfirmationsRequired = 2
+
+  return deployer.deploy(MultiSigWallet, owners, numConfirmationsRequired)
+}
