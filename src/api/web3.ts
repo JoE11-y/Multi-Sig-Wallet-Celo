@@ -1,18 +1,21 @@
 import Web3 from "web3";
+import { newKitFromWeb3 } from "@celo/contractkit";
 
 // https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md
 export async function unlockAccount() {
   // @ts-ignore
-  const { ethereum } = window;
+  const { celo } = window;
 
-  if (!ethereum) {
+  if (!celo) {
     throw new Error("Web3 not found");
   }
 
-  const web3 = new Web3(ethereum);
-  await ethereum.enable();
+  const web3 = new Web3(celo);
+  await celo.enable();
+  
+  const kit = newKitFromWeb3(web3);
 
-  const accounts = await web3.eth.getAccounts();
+  const accounts = await kit.web3.eth.getAccounts();
 
   return { web3, account: accounts[0] || "" };
 }
@@ -23,7 +26,8 @@ export function subscribeToAccount(
 ) {
   const id = setInterval(async () => {
     try {
-      const accounts = await web3.eth.getAccounts();
+      const kit = newKitFromWeb3(web3);
+      const accounts = await kit.web3.eth.getAccounts();
       callback(null, accounts[0]);
     } catch (error) {
       callback(error, null);

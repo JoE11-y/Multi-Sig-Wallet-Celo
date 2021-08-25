@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import BN from "bn.js";
+import BigNumber from "@celo/connect/node_modules/bignumber.js";
 import React, {
   useReducer,
   useEffect,
@@ -135,11 +136,6 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
           };
 
           if (data.executed) {
-            /*
-            Exercise
-            Complete the if statement
-            Set updatedTx.executed to true
-            */
             updatedTx.executed = true;
           }
           if (data.confirmed !== undefined) {
@@ -315,16 +311,6 @@ export function Updater() {
                 account,
               });
               break;
-            /*
-            Exercise
-            Create a case statement for "ExecuteTransaction"
-            Call updateTx with the following input
-            {
-              ...log.returnValues,
-              executed: true,
-              account,
-            }
-            */
             case "ExecuteTransaction":
               updateTx({
                 ...log.returnValues,

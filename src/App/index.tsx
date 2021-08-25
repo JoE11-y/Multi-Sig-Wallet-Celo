@@ -42,7 +42,7 @@ function App() {
             {error ? (
               <Message error>{error.message}</Message>
             ) : (
-              <Message warning>Metamask is not connected</Message>
+              <Message warning>Celo Wallet is not connected</Message>
             )}
             <Button
               color="green"
@@ -50,10 +50,12 @@ function App() {
               disabled={pending}
               loading={pending}
             >
-              Connect to Metamask
+              Connect to Celo Wallet
             </Button>
           </>
         )}
+
+        
       </div>
       <Footer />
     </div>
