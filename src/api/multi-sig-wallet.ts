@@ -36,11 +36,11 @@ interface GetResponse {
   transactions: Transaction[];
 }
 
-async function approve(web3: Web3, account: string, price: BigNumber ) {
+export async function approve(web3: Web3, account: string, price: BigNumber ) {
   const kit = newKitFromWeb3(web3);
 
   const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
-  
+  // eslint-disable-next-line
   const result = await cUSDContract.methods
     .approve(MWContractAddress, price)
     .send({ from: account})
@@ -53,7 +53,8 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   //const balance = await multiSig.getBalance();
-  const balance = await contract.methods.getBalance().call();
+  const cUSD = await contract.methods.getBalance().call();
+  const balance = new BigNumber(cUSD).shiftedBy(-ERC20_DECIMALS).toString()
   //const balance = "0";
   const owners = await contract.methods.getOwners().call()
   //const owners = await multiSig.getOwners();
@@ -65,7 +66,7 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
   //const transactionCount = await multiSig.getTransactionCount();
 
   // get 10 most recent tx
-  const count = transactionCount.toNumber();
+  const count = transactionCount
   const transactions: Transaction[] = [];
   for (let i = 1; i <= 10; i++) {
     const txIndex = count - i;
@@ -85,7 +86,7 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
       value: tx.value,
       data: tx.data,
       executed: tx.executed,
-      numConfirmations: tx.numConfirmations.toNumber(),
+      numConfirmations: tx.numConfirmations,
       isConfirmedByCurrentAccount: isConfirmed,
     });
   }
@@ -94,7 +95,7 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
     address: MWContractAddress,
     balance,
     owners,
-    numConfirmationsRequired: numConfirmationsRequired.toNumber(),
+    numConfirmationsRequired: numConfirmationsRequired,
     transactionCount: count,
     transactions,
   };
@@ -112,19 +113,10 @@ export async function deposit(
   const kit = newKitFromWeb3(web3);
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
-  try {
-    await approve(web3, account, value)
-  } catch (error) {
-    alert(`⚠️ ${error}.`)
-  }
-  alert(`⌛ Awaiting payment for "$.name}"...`)
-  try {
-    const result = await contract.methods
-      .deposit
-      .send({ from: account})
-  } catch (error) {
-    alert(`⚠️ ${error}.`)
-  }
+  // eslint-disable-next-line
+  const result = await contract.methods
+    .deposit(value)
+    .send({ from: account})
 
   //await multiSig.deposit(value, { from: account});
 }
@@ -145,6 +137,7 @@ export async function submitTx(
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   try {
+    // eslint-disable-next-line
     const result = await contract.methods
       .submitTransaction(to, value, data)
       .send({ from: account })
@@ -169,6 +162,7 @@ export async function confirmTx(
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   try {
+    // eslint-disable-next-line
     const result = await contract.methods
       .confirmTransaction(txIndex)
       .send({ from: account })
@@ -194,6 +188,7 @@ export async function revokeConfirmation(
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   try {
+    // eslint-disable-next-line
     const result = await contract.methods
       .revokeConfirmation(txIndex)
       .send({ from: account })
@@ -219,6 +214,7 @@ export async function executeTx(
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   try {
+    // eslint-disable-next-line
     const result = await contract.methods
       .executeConfirmation(txIndex)
       .send({ from: account })

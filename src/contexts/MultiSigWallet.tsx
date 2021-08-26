@@ -87,7 +87,7 @@ interface UpdateTx {
 type Action = Set | UpdateBalance | AddTx | UpdateTx;
 
 function reducer(state: State = INITIAL_STATE, action: Action) {
-  switch (action.type) {
+  switch (action.type) { 
     case SET: {
       return {
         ...state,
@@ -282,7 +282,7 @@ export function Updater() {
     if (web3) {
       get(web3, account);
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3]);
 
   useEffect(() => {
@@ -325,7 +325,7 @@ export function Updater() {
         }
       });
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3, state.address]);
   return null;
 }
