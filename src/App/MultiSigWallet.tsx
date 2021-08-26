@@ -4,6 +4,8 @@ import { Button } from "semantic-ui-react";
 import DepositForm from "./DepositForm";
 import CreateTxModal from "./CreateTxModal";
 import TransactionList from "./TransactionList";
+import BigNumber from "web3-core/node_modules/bignumber.js";
+const ERC20_DECIMALS = 18
 
 function MultiSigWallet() {
   const { state } = useMultiSigWalletContext();
@@ -12,7 +14,7 @@ function MultiSigWallet() {
   return (
     <div>
       <div>Contract: {state.address}</div>
-      <h3>Balance: {state.balance} cUSD</h3>
+      <h3>Balance: {new BigNumber(state.balance).shiftedBy(-ERC20_DECIMALS).toString()} cUSD</h3>
       <DepositForm />
       <h3>Owners</h3>
       <ul>

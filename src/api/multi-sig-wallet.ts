@@ -1,11 +1,7 @@
 import Web3 from "web3";
-//import BN from "bn.js";
 import { AbiItem } from "web3-utils";
 import { newKitFromWeb3 } from "@celo/contractkit";
 import BigNumber from "@celo/connect/node_modules/bignumber.js";
-//import multiSigWallet from "../contracts/MultiSigWallet.abi.json"
-//import erc20 from "../contracts/IERC20Token.abi.json"
-import BN from "bn.js";
 // eslint-disable-next-line
 import { updateTypeAliasDeclaration } from "typescript";
 //import { values } from "lodash";
@@ -14,13 +10,13 @@ const ERC20_DECIMALS = 18
 const erc20 = require("../contracts/IERC20Token.abi.json");
 const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-const MWContractAddress = "0x09EDa28D80F373aba275146EAEE9d5A40e455f0b"
+const MWContractAddress = "0xCda53495713Fc650C438735Fe78Bb416028757D1"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {
   txIndex: number;
   to: string;
-  value: BN;
+  amount: BigNumber;
   data: string;
   executed: boolean;
   numConfirmations: number;
@@ -52,18 +48,13 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  //const balance = await multiSig.getBalance();
-  const cUSD = await contract.methods.getBalance().call();
-  const balance = new BigNumber(cUSD).shiftedBy(-ERC20_DECIMALS).toString()
-  //const balance = "0";
+  const balance = await contract.methods.getBalance().call();
+
   const owners = await contract.methods.getOwners().call()
-  //const owners = await multiSig.getOwners();
 
   const numConfirmationsRequired = await contract.methods.getNumConfirmationsRequired().call()
-  //const numConfirmationsRequired = await multiSig.numConfirmationsRequired();
-  
+ 
   const transactionCount = await contract.methods.getTransactionCount().call();
-  //const transactionCount = await multiSig.getTransactionCount();
 
   // get 10 most recent tx
   const count = transactionCount
@@ -75,15 +66,13 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
     }
 
     const tx = await contract.methods.getTransaction(txIndex).call();
-    //const tx = await multiSig.getTransaction(txIndex);
     
     const isConfirmed = await contract.methods.isConfirmed(txIndex, account).call();
-    //const isConfirmed = await multiSig.isConfirmed(txIndex, account);
 
     transactions.push({
       txIndex,
       to: tx.to,
-      value: tx.value,
+      amount: tx.amount,
       data: tx.data,
       executed: tx.executed,
       numConfirmations: tx.numConfirmations,
@@ -105,20 +94,18 @@ export async function deposit(
   web3: Web3,
   account: string,
   params: {
-    value: BigNumber;
+    amount: BigNumber;
   }
 ) {
-  const { value } = params;
+  const { amount } = params;
 
   const kit = newKitFromWeb3(web3);
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
   // eslint-disable-next-line
   const result = await contract.methods
-    .deposit(value)
+    .deposit(amount)
     .send({ from: account})
-
-  //await multiSig.deposit(value, { from: account});
 }
 
 export async function submitTx(
@@ -127,26 +114,25 @@ export async function submitTx(
   params: {
     to: string;
     // NOTE: error when passing BigNumber type, so pass string
-    value: string;
+    amount: string;
     data: string;
   }
 ) {
   const kit = newKitFromWeb3(web3);
-  const { to, value, data } = params;
+  const { to, amount, data } = params;
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
   try {
+    
+    const _amount = new BigNumber(amount).shiftedBy(ERC20_DECIMALS)
     // eslint-disable-next-line
     const result = await contract.methods
-      .submitTransaction(to, value, data)
+      .submitTransaction(to, _amount, data)
       .send({ from: account })
   } catch (error) {
     alert(`⚠️ ${error}.`)
   }
-  // await multiSig.submitTransaction(to, value, data, {
-  //   from: account,
-  // });
 }
 
 export async function confirmTx(
@@ -169,10 +155,6 @@ export async function confirmTx(
   } catch (error) {
     alert(`⚠️ ${error}.`)
   }
-
-  // await multiSig.confirmTransaction(txIndex, {
-  //   from: account,
-  // });
 }
 
 export async function revokeConfirmation(
@@ -195,10 +177,6 @@ export async function revokeConfirmation(
   } catch (error) {
     alert(`⚠️ ${error}.`)
   }
-
-  // await multiSig.revokeConfirmation(txIndex, {
-  //   from: account,
-  // });
 }
 
 export async function executeTx(
@@ -221,11 +199,6 @@ export async function executeTx(
   } catch (error) {
     alert(`⚠️ ${error}.`)
   }
-
-
-  // await multiSig.executeTransaction(txIndex, {
-  //   from: account,
-  // });
 }
 
 export function subscribe(
@@ -263,7 +236,7 @@ interface SubmitTransaction {
     owner: string;
     txIndex: string;
     to: string;
-    value: string;
+    amount: string;
     data: string;
   };
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Web3 from "web3";
-//import BN from "bn.js";
 import BigNumber from "@celo/connect/node_modules/bignumber.js";
 import { Button, Form } from "semantic-ui-react";
 import { useWeb3Context } from "../contexts/Web3";
@@ -12,7 +11,7 @@ interface Props {}
 interface DepositParams {
   web3: Web3;
   account: string;
-  value: BigNumber;
+  amount: BigNumber;
 }
 
 const DepositForm: React.FC<Props> = () => {
@@ -22,7 +21,7 @@ const DepositForm: React.FC<Props> = () => {
 
   const [input, setInput] = useState("");
   const { pending, call } = useAsync<DepositParams, void>(
-    ({ web3, account, value }) => deposit(web3, account, { value })
+    ({ web3, account, amount }) => deposit(web3, account, { amount })
   );
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -39,20 +38,20 @@ const DepositForm: React.FC<Props> = () => {
       return;
     }
 
-    const value = new BigNumber(input).shiftedBy(ERC20_DECIMALS);
+    const amount = new BigNumber(input).shiftedBy(ERC20_DECIMALS);
     const zero = new BigNumber(0).shiftedBy(ERC20_DECIMALS);
 
     try {
-      await approve(web3, account, value)
+      await approve(web3, account, amount)
     } catch (error) {
       alert(`⚠️ ${error}.`)
     }
     
-    if (value.gt(zero)) {
+    if (amount.gt(zero)) {
       const { error } = await call({
         web3,
         account,
-        value,
+        amount,
       });
 
       if (error) {

@@ -1,11 +1,11 @@
 import React from "react";
-import BN from "bn.js";
+import BigNumber from "web3-core/node_modules/bignumber.js";
 import TransactionActions from "./TransactionActions";
-
+const ERC20_DECIMALS = 18
 interface Transaction {
   txIndex: number;
   to: string;
-  value: BN;
+  amount: BigNumber;
   data: string;
   executed: boolean;
   numConfirmations: number;
@@ -25,11 +25,11 @@ const TransactionList: React.FC<Props> = ({
 }) => {
   return (
     <ul>
-      {data.map(tx => (
+      {data.map(tx => ( 
         <li key={tx.txIndex}>
           <div>Tx Index: {tx.txIndex}</div>
           <div>To: {tx.to}</div>
-          <div>Value: {tx.value.toString()}</div>
+          <div>Amount: {new BigNumber(tx.amount).shiftedBy(-ERC20_DECIMALS).toString()} cUSD</div>
           <div>Data: {tx.data}</div>
           <div>Executed: {tx.executed.toString()}</div>
           <div>Confirmations: {tx.numConfirmations}</div>

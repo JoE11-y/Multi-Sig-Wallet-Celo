@@ -43,7 +43,7 @@ contract MultiSigWallet {
 
     struct Transaction {
         address to;
-        uint256 value;
+        uint256 amount;
         bytes data;
         bool executed;
         uint256 numConfirmations;
@@ -58,7 +58,7 @@ contract MultiSigWallet {
         address indexed owner,
         uint256 indexed txIndex,
         address indexed to,
-        uint256 value,
+        uint256 amount,
         bytes data
     );
     event ConfirmTransaction(address indexed owner, uint256 indexed txIndex);
@@ -86,6 +86,10 @@ contract MultiSigWallet {
             !transactions[_txIndex].isConfirmed[msg.sender],
             "tx already confirmed"
         );
+        _;
+    }
+
+    modifier enoughBal(uint256 _amount) {
         _;
     }
 
@@ -122,7 +126,18 @@ contract MultiSigWallet {
             "Transfer failed"
         );
 
-        emit Deposit(msg.sender, msg.value, address(this).balance);
+        emit Deposit(
+            msg.sender,
+            _amount,
+            IERC20Token(cUsdTokenAddress).balanceOf(address(this))
+        );
+    }
+
+    function getBalance() public view returns (uint256) {
+        uint256 balance = IERC20Token(cUsdTokenAddress).balanceOf(
+            address(this)
+        );
+        return balance;
     }
 
     function submitTransaction(
@@ -134,7 +149,7 @@ contract MultiSigWallet {
         transactions.push();
         Transaction storage _transaction = transactions[txIndex];
         _transaction.to = _to;
-        _transaction.value = _value;
+        _transaction.amount = _value;
         _transaction.data = _data;
         _transaction.executed = false;
         _transaction.numConfirmations = 0;
@@ -171,10 +186,15 @@ contract MultiSigWallet {
         );
 
         address _to = transaction.to;
-        uint256 _value = transaction.value;
+        uint256 _amount = transaction.amount;
 
         require(
-            IERC20Token(cUsdTokenAddress).transfer(_to, _value),
+            IERC20Token(cUsdTokenAddress).balanceOf(address(this)) >= _amount,
+            "Not Enough Balance"
+        );
+
+        require(
+            IERC20Token(cUsdTokenAddress).transfer(_to, _amount),
             "tx failed"
         );
 
@@ -204,7 +224,7 @@ contract MultiSigWallet {
         view
         returns (
             address to,
-            uint256 value,
+            uint256 amount,
             bytes memory data,
             bool executed,
             uint256 numConfirmations
@@ -214,7 +234,7 @@ contract MultiSigWallet {
 
         return (
             transaction.to,
-            transaction.value,
+            transaction.amount,
             transaction.data,
             transaction.executed,
             transaction.numConfirmations

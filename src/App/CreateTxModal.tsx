@@ -11,7 +11,7 @@ interface Props {
 
 interface SubmitTxParams {
   to: string;
-  value: string;
+  amount: string;
   data: string;
 }
 
@@ -32,7 +32,7 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
 
   const [inputs, setInputs] = useState({
     to: "",
-    value: 0,
+    amount: 0,
     data: "",
   });
 
@@ -47,10 +47,10 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
     if (pending) {
       return;
     }
-
+    
     const { error } = await call({
       ...inputs,
-      value: inputs.value.toString(),
+      amount: inputs.amount.toString(),
     });
 
     if (!error) {
@@ -73,12 +73,12 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
             />
           </Form.Field>
           <Form.Field>
-            <label>Value</label>
+            <label>Amount</label>
             <Form.Input
               type="number"
               min={0}
-              value={inputs.value}
-              onChange={(e) => onChange("value", e)}
+              value={inputs.amount}
+              onChange={(e) => onChange("amount", e)}
             />
           </Form.Field>
           <Form.Field>

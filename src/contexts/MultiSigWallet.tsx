@@ -1,6 +1,4 @@
 import Web3 from "web3";
-import BN from "bn.js";
-//import BigNumber from "@celo/connect/node_modules/bignumber.js";
 import React, {
   useReducer,
   useEffect,
@@ -10,6 +8,8 @@ import React, {
 } from "react";
 import { useWeb3Context } from "./Web3";
 import { get as getMultiSigWallet, subscribe } from "../api/multi-sig-wallet";
+import BigNumber from "web3-core/node_modules/bignumber.js";
+//const ERC20_DECIMALS = 18
 
 interface State {
   address: string;
@@ -23,7 +23,7 @@ interface State {
 interface Transaction {
   txIndex: number;
   to: string;
-  value: BN;
+  amount: BigNumber;
   data: string;
   executed: boolean;
   numConfirmations: number;
@@ -68,7 +68,7 @@ interface AddTx {
   data: {
     txIndex: string;
     to: string;
-    value: string;
+    amount: string;
     data: string;
   };
 }
@@ -102,14 +102,13 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
     }
     case ADD_TX: {
       const {
-        data: { txIndex, to, value, data },
+        data: { txIndex, to, amount, data },
       } = action;
-
       const transactions = [
         {
           txIndex: parseInt(txIndex),
           to,
-          value: Web3.utils.toBN(value),
+          amount: new BigNumber(amount),
           data,
           executed: false,
           numConfirmations: 0,
@@ -182,7 +181,7 @@ interface UpdateBalanceInputs {
 interface AddTxInputs {
   txIndex: string;
   to: string;
-  value: string;
+  amount: string;
   data: string;
 }
 
