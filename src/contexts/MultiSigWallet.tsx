@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import BN from "bn.js";
-import BigNumber from "@celo/connect/node_modules/bignumber.js";
+//import BigNumber from "@celo/connect/node_modules/bignumber.js";
 import React, {
   useReducer,
   useEffect,
@@ -282,6 +282,7 @@ export function Updater() {
     if (web3) {
       get(web3, account);
     }
+    // eslint-disable-next-line
   }, [web3]);
 
   useEffect(() => {
@@ -324,6 +325,7 @@ export function Updater() {
         }
       });
     }
+    // eslint-disable-next-line
   }, [web3, state.address]);
   return null;
 }

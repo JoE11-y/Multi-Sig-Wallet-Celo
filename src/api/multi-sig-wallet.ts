@@ -1,21 +1,21 @@
 import Web3 from "web3";
 //import BN from "bn.js";
+import { AbiItem } from "web3-utils";
 import { newKitFromWeb3 } from "@celo/contractkit";
-import * as TruffleContract from "@truffle/contract";
 import BigNumber from "@celo/connect/node_modules/bignumber.js";
-import multiSigWallet from "../../contracts/build/contracts/MultiSigWallet.json"
-import erc20 from "../../contracts/build/contracts/IERC20Token.json"
+//import multiSigWallet from "../contracts/MultiSigWallet.abi.json"
+//import erc20 from "../contracts/IERC20Token.abi.json"
 import BN from "bn.js";
+// eslint-disable-next-line
 import { updateTypeAliasDeclaration } from "typescript";
 //import { values } from "lodash";
 
 const ERC20_DECIMALS = 18
-const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+const erc20 = require("../contracts/IERC20Token.abi.json");
+const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-// @ts-ignore
-const MultiSigWallet = TruffleContract(multiSigWallet);
-// @ts-ignore
-const ERC20 = TruffleContract(erc20);
+const MWContractAddress = "0x92deF95294fc6a8B8cFc4Fcb9a36c556F31f45de"
+const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {
   txIndex: number;
@@ -38,11 +38,11 @@ interface GetResponse {
 
 async function approve(web3: Web3, account: string, price: BigNumber ) {
   const kit = newKitFromWeb3(web3);
-  const cUSDContract = new kit.web3.eth.Contract(ERC20.abi, cUSDContractAddress)
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
-  const multiSig = await MultiSigWallet.deployed();
+
+  const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
+  
   const result = await cUSDContract.methods
-    .approve(multiSig.address, price)
+    .approve(MWContractAddress, price)
     .send({ from: account})
   return result
 }
@@ -50,26 +50,19 @@ async function approve(web3: Web3, account: string, price: BigNumber ) {
 export async function get(web3: Web3, account: string): Promise<GetResponse> {
   const kit = newKitFromWeb3(web3);
 
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  const multiSig = await MultiSigWallet.deployed();
+  //const balance = await multiSig.getBalance();
+  const balance = await contract.methods.getBalance().call();
+  //const balance = "0";
+  const owners = await contract.methods.getOwners().call()
+  //const owners = await multiSig.getOwners();
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
-
-  const stabletoken = await kit.contracts.getStableToken();
-
-  const cUSDBalance = await stabletoken.balanceOf(multiSig.address);
-
-  const balance = cUSDBalance.shiftedBy(-ERC20_DECIMALS).toFixed(2)
-
-  // const owners = await contract.methods.getOwners().call()
-  const owners = await multiSig.getOwners();
-
-  // const numConfirmationsRequired = await contract.methods.getNumConfirmationsRequired().call()
-  const numConfirmationsRequired = await multiSig.numConfirmationsRequired();
+  const numConfirmationsRequired = await contract.methods.getNumConfirmationsRequired().call()
+  //const numConfirmationsRequired = await multiSig.numConfirmationsRequired();
   
-  // const transactionCount = await contract.methods.getTransactionCount().call();
-  const transactionCount = await multiSig.getTransactionCount();
+  const transactionCount = await contract.methods.getTransactionCount().call();
+  //const transactionCount = await multiSig.getTransactionCount();
 
   // get 10 most recent tx
   const count = transactionCount.toNumber();
@@ -80,11 +73,11 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
       break;
     }
 
-    // const tx = await contract.methods.getTransaction(txIndex).call();
-    const tx = await multiSig.getTransaction(txIndex);
+    const tx = await contract.methods.getTransaction(txIndex).call();
+    //const tx = await multiSig.getTransaction(txIndex);
     
-    //const isConfirmed = await contract.methods.isConfirmed(txIndex, account).call();
-    const isConfirmed = await multiSig.isConfirmed(txIndex, account);
+    const isConfirmed = await contract.methods.isConfirmed(txIndex, account).call();
+    //const isConfirmed = await multiSig.isConfirmed(txIndex, account);
 
     transactions.push({
       txIndex,
@@ -98,7 +91,7 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
   }
 
   return {
-    address: multiSig.address,
+    address: MWContractAddress,
     balance,
     owners,
     numConfirmationsRequired: numConfirmationsRequired.toNumber(),
@@ -117,27 +110,23 @@ export async function deposit(
   const { value } = params;
 
   const kit = newKitFromWeb3(web3);
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
 
-  const multiSig = await MultiSigWallet.deployed();
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  try {
+    await approve(web3, account, value)
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
+  alert(`⌛ Awaiting payment for "$.name}"...`)
+  try {
+    const result = await contract.methods
+      .deposit
+      .send({ from: account})
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
-
-  // try {
-  //   await approve(web3, account, value)
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
-  // alert(`⌛ Awaiting payment for "$.name}"...`)
-  // try {
-  //   const result = await contract.methods
-  //     .deposit
-  //     .send({ from: account})
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
-
-  await multiSig.deposit(value, { from: account});
+  //await multiSig.deposit(value, { from: account});
 }
 
 export async function submitTx(
@@ -152,21 +141,19 @@ export async function submitTx(
 ) {
   const kit = newKitFromWeb3(web3);
   const { to, value, data } = params;
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
-  const multiSig = await MultiSigWallet.deployed();
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  // try {
-  //   const result = await contract.methods
-  //     .submitTransaction(to, value, data)
-  //     .send({ from: account })
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
-  await multiSig.submitTransaction(to, value, data, {
-    from: account,
-  });
+  try {
+    const result = await contract.methods
+      .submitTransaction(to, value, data)
+      .send({ from: account })
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
+  // await multiSig.submitTransaction(to, value, data, {
+  //   from: account,
+  // });
 }
 
 export async function confirmTx(
@@ -178,22 +165,20 @@ export async function confirmTx(
 ) {
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
-  const multiSig = await MultiSigWallet.deployed();
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  // try {
-  //   const result = await contract.methods
-  //     .confirmTransaction(txIndex)
-  //     .send({ from: account })
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
+  try {
+    const result = await contract.methods
+      .confirmTransaction(txIndex)
+      .send({ from: account })
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
 
-  await multiSig.confirmTransaction(txIndex, {
-    from: account,
-  });
+  // await multiSig.confirmTransaction(txIndex, {
+  //   from: account,
+  // });
 }
 
 export async function revokeConfirmation(
@@ -205,22 +190,20 @@ export async function revokeConfirmation(
 ) {
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
-  const multiSig = await MultiSigWallet.deployed();
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  // try {
-  //   const result = await contract.methods
-  //     .revokeConfirmation(txIndex)
-  //     .send({ from: account })
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
+  try {
+    const result = await contract.methods
+      .revokeConfirmation(txIndex)
+      .send({ from: account })
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
 
-  await multiSig.revokeConfirmation(txIndex, {
-    from: account,
-  });
+  // await multiSig.revokeConfirmation(txIndex, {
+  //   from: account,
+  // });
 }
 
 export async function executeTx(
@@ -233,23 +216,20 @@ export async function executeTx(
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
 
-  MultiSigWallet.setProvider(kit.web3.currentProvider);
-  const multiSig = await MultiSigWallet.deployed();
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
-  // const contract = new kit.web3.eth.Contract(MultiSigWallet.abi, multiSig.address)
-
-  // try {
-  //   const result = await contract.methods
-  //     .executeConfirmation(txIndex)
-  //     .send({ from: account })
-  // } catch (error) {
-  //   alert(`⚠️ ${error}.`)
-  // }
+  try {
+    const result = await contract.methods
+      .executeConfirmation(txIndex)
+      .send({ from: account })
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
 
 
-  await multiSig.executeTransaction(txIndex, {
-    from: account,
-  });
+  // await multiSig.executeTransaction(txIndex, {
+  //   from: account,
+  // });
 }
 
 export function subscribe(
@@ -259,7 +239,7 @@ export function subscribe(
 ) {
   const kit = newKitFromWeb3(web3);
 
-  const multiSig = new kit.web3.eth.Contract(MultiSigWallet.abi, address);
+  const multiSig = new kit.web3.eth.Contract(multiSigWallet as AbiItem, address);
 
   const res = multiSig.events.allEvents((error: Error, log: Log) => {
     if (error) {

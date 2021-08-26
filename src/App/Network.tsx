@@ -6,16 +6,14 @@ interface Props {
 
 function getNetwork(netId: number) {
   switch (netId) {
-    case 1:
-      return "Mainnet";
-    case 2:
-      return "Morden test network";
-    case 3:
-      return "Ropsten network";
-    case 4:
-      return "Rinkeby test network";
-    case 42:
-      return "Kovan test network";
+    case 42220:
+      return "Celo Main Network";
+    case 44787:
+      return "Alfajores Test Network";
+    case 62320:
+      return "Bavlaka Test Network";
+    case 5777:
+      return "Dev Network";
     default:
       return "Unkown network";
   }

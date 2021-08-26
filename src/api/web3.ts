@@ -45,7 +45,8 @@ export function subscribeToNetId(
 ) {
   const id = setInterval(async () => {
     try {
-      const netId = await web3.eth.net.getId();
+      const kit = newKitFromWeb3(web3);
+      const netId = await kit.web3.eth.net.getId();
       callback(null, netId);
     } catch (error) {
       callback(error, null);
