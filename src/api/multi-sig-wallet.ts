@@ -14,7 +14,7 @@ const ERC20_DECIMALS = 18
 const erc20 = require("../contracts/IERC20Token.abi.json");
 const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-const MWContractAddress = "0x92deF95294fc6a8B8cFc4Fcb9a36c556F31f45de"
+const MWContractAddress = "0x09EDa28D80F373aba275146EAEE9d5A40e455f0b"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {
@@ -216,7 +216,7 @@ export async function executeTx(
   try {
     // eslint-disable-next-line
     const result = await contract.methods
-      .executeConfirmation(txIndex)
+      .executeTransaction(txIndex)
       .send({ from: account })
   } catch (error) {
     alert(`⚠️ ${error}.`)
