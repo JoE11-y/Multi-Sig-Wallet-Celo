@@ -8,7 +8,7 @@ const Footer: React.FC<Props> = () => {
   return (
     <div className={styles.component}>
       <img src={github} className={styles.image} alt="github" />
-      <a href="www.github.com" target="__blank">
+      <a href="https://github.com/joelaghina/Multi-Signature-Wallet" target="__blank">
         Code
       </a>
     </div>

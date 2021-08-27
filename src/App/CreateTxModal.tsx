@@ -12,7 +12,7 @@ interface Props {
 interface SubmitTxParams {
   to: string;
   amount: string;
-  data: string;
+  purpose: string;
 }
 
 const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
@@ -33,7 +33,7 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
   const [inputs, setInputs] = useState({
     to: "",
     amount: 0,
-    data: "",
+    purpose: "",
   });
 
   function onChange(name: string, e: React.ChangeEvent<HTMLInputElement>) {
@@ -82,9 +82,9 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
             />
           </Form.Field>
           <Form.Field>
-            <label>Data</label>
+            <label>Purpose</label>
             <Form.Input
-              value={inputs.data}
+              value={inputs.purpose}
               onChange={(e) => onChange("data", e)}
             />
           </Form.Field>

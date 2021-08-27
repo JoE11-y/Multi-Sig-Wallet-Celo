@@ -10,14 +10,14 @@ const ERC20_DECIMALS = 18
 const erc20 = require("../contracts/IERC20Token.abi.json");
 const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-const MWContractAddress = "0xCda53495713Fc650C438735Fe78Bb416028757D1"
+const MWContractAddress = "0x34E4d808536251F0f1187A037435D5f8BBD8cA2D"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {
   txIndex: number;
   to: string;
   amount: BigNumber;
-  data: string;
+  purpose: string;
   executed: boolean;
   numConfirmations: number;
   isConfirmedByCurrentAccount: boolean;
@@ -73,7 +73,7 @@ export async function get(web3: Web3, account: string): Promise<GetResponse> {
       txIndex,
       to: tx.to,
       amount: tx.amount,
-      data: tx.data,
+      purpose: tx.purpose,
       executed: tx.executed,
       numConfirmations: tx.numConfirmations,
       isConfirmedByCurrentAccount: isConfirmed,
@@ -121,11 +121,11 @@ export async function submitTx(
     to: string;
     // NOTE: error when passing BigNumber type, so pass string
     amount: string;
-    data: string;
+    purpose: string;
   }
 ) {
   const kit = newKitFromWeb3(web3);
-  const { to, amount, data } = params;
+  const { to, amount, purpose } = params;
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
 
@@ -134,7 +134,7 @@ export async function submitTx(
     const _amount = new BigNumber(amount).shiftedBy(ERC20_DECIMALS)
     // eslint-disable-next-line
     const result = await contract.methods
-      .submitTransaction(to, _amount, data)
+      .submitTransaction(to, _amount, purpose)
       .send({ from: account })
   } catch (error) {
     alert(`⚠️ ${error}.`)
@@ -243,7 +243,7 @@ interface SubmitTransaction {
     txIndex: string;
     to: string;
     amount: string;
-    data: string;
+    purpose: string;
   };
 }
 

@@ -24,7 +24,7 @@ interface Transaction {
   txIndex: number;
   to: string;
   amount: BigNumber;
-  data: string;
+  purpose: string;
   executed: boolean;
   numConfirmations: number;
   isConfirmedByCurrentAccount: boolean;
@@ -69,7 +69,7 @@ interface AddTx {
     txIndex: string;
     to: string;
     amount: string;
-    data: string;
+    purpose: string;
   };
 }
 
@@ -102,14 +102,14 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
     }
     case ADD_TX: {
       const {
-        data: { txIndex, to, amount, data },
+        data: { txIndex, to, amount, purpose },
       } = action;
       const transactions = [
         {
           txIndex: parseInt(txIndex),
           to,
           amount: new BigNumber(amount),
-          data,
+          purpose,
           executed: false,
           numConfirmations: 0,
           isConfirmedByCurrentAccount: false,
@@ -181,7 +181,7 @@ interface AddTxInputs {
   txIndex: string;
   to: string;
   amount: string;
-  data: string;
+  purpose: string;
 }
 
 interface UpdateTxInputs {

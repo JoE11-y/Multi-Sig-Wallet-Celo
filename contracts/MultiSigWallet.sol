@@ -44,7 +44,7 @@ contract MultiSigWallet {
     struct Transaction {
         address to;
         uint256 amount;
-        bytes data;
+        string purpose;
         bool executed;
         uint256 numConfirmations;
         mapping(address => bool) isConfirmed;
@@ -59,7 +59,7 @@ contract MultiSigWallet {
         uint256 indexed txIndex,
         address indexed to,
         uint256 amount,
-        bytes data
+        string purpose
     );
     event ConfirmTransaction(address indexed owner, uint256 indexed txIndex);
     event RevokeConfirmation(address indexed owner, uint256 indexed txIndex);
@@ -143,18 +143,18 @@ contract MultiSigWallet {
     function submitTransaction(
         address _to,
         uint256 _value,
-        bytes memory _data
+        string memory _purpose
     ) public onlyOwner {
         uint256 txIndex = transactions.length;
         transactions.push();
         Transaction storage _transaction = transactions[txIndex];
         _transaction.to = _to;
         _transaction.amount = _value;
-        _transaction.data = _data;
+        _transaction.purpose = _purpose;
         _transaction.executed = false;
         _transaction.numConfirmations = 0;
 
-        emit SubmitTransaction(msg.sender, txIndex, _to, _value, _data);
+        emit SubmitTransaction(msg.sender, txIndex, _to, _value, _purpose);
     }
 
     function confirmTransaction(uint256 _txIndex)
@@ -225,7 +225,7 @@ contract MultiSigWallet {
         returns (
             address to,
             uint256 amount,
-            bytes memory data,
+            string memory data,
             bool executed,
             uint256 numConfirmations
         )
@@ -235,7 +235,7 @@ contract MultiSigWallet {
         return (
             transaction.to,
             transaction.amount,
-            transaction.data,
+            transaction.purpose,
             transaction.executed,
             transaction.numConfirmations
         );

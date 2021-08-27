@@ -6,7 +6,7 @@ interface Transaction {
   txIndex: number;
   to: string;
   amount: BigNumber;
-  data: string;
+  purpose: string;
   executed: boolean;
   numConfirmations: number;
   isConfirmedByCurrentAccount: boolean;
@@ -30,7 +30,7 @@ const TransactionList: React.FC<Props> = ({
           <div>Tx Index: {tx.txIndex}</div>
           <div>To: {tx.to}</div>
           <div>Amount: {new BigNumber(tx.amount).shiftedBy(-ERC20_DECIMALS).toString()} cUSD</div>
-          <div>Data: {tx.data}</div>
+          <div>Data: {tx.purpose}</div>
           <div>Executed: {tx.executed.toString()}</div>
           <div>Confirmations: {tx.numConfirmations}</div>
           <TransactionActions
