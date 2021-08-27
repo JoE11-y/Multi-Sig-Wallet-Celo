@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-And Using [Typescript].
+And Using [Typescript](https://www.typescriptlang.org/).
 
 A multisig wallet is a wallet shared by two or more users called copayers. Depending on the kind of wallet, the number of signatures required to sign a transaction will be lower or equal to the number of copayers of the wallet.
 
