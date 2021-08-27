@@ -26,8 +26,7 @@ const TransactionList: React.FC<Props> = ({
   return (
     <ul>
       {data.map(tx => ( 
-        <li key={tx.txIndex}>
-          <div>Tx Index: {tx.txIndex}</div>
+        <li key={tx.txIndex} style={{paddingBottom: "15px"}}>
           <div>To: {tx.to}</div>
           <div>Amount: {new BigNumber(tx.amount).shiftedBy(-ERC20_DECIMALS).toString()} cUSD</div>
           <div>Purpose: {tx.purpose}</div>
