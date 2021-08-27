@@ -43,6 +43,7 @@ const SET = "SET";
 const UPDATE_BALANCE = "UPDATE_BALANCE";
 const ADD_TX = "ADD_TX";
 const UPDATE_TX = "UPDATE_TX";
+const UPDATE_BALANCE_WITHDRAW = "UPDATE_BALANCE_WITHDRAW";
 
 interface Set {
   type: "SET";
@@ -84,7 +85,14 @@ interface UpdateTx {
   };
 }
 
-type Action = Set | UpdateBalance | AddTx | UpdateTx;
+interface UpdateBalanceWithdraw {
+  type: "UPDATE_BALANCE_WITHDRAW";
+  data: {
+    balance: string;
+  }
+}
+
+type Action = Set | UpdateBalance | AddTx | UpdateTx | UpdateBalanceWithdraw;
 
 function reducer(state: State = INITIAL_STATE, action: Action) {
   switch (action.type) { 
@@ -159,6 +167,12 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
         transactions,
       };
     }
+    case UPDATE_BALANCE_WITHDRAW: {
+      return {
+        ...state,
+        balance: action.data.balance,
+      };
+    }
     default:
       return state;
   }
@@ -192,12 +206,17 @@ interface UpdateTxInputs {
   executed?: boolean;
 }
 
+interface UpdateBalanceWithdrawInputs {
+  balance: string;
+}
+
 const MultiSigWalletContext = createContext({
   state: INITIAL_STATE,
   set: (_data: SetInputs) => {},
   updateBalance: (_data: UpdateBalanceInputs) => {},
   addTx: (_data: AddTxInputs) => {},
   updateTx: (_data: UpdateTxInputs) => {},
+  updateBalanceWithdraw: (_data: UpdateBalanceWithdrawInputs) => {},
 });
 
 export function useMultiSigWalletContext() {
@@ -236,6 +255,12 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
       data,
     });
   }
+  function updateBalanceWithdraw(data: UpdateBalanceWithdrawInputs) {
+    dispatch({
+      type: UPDATE_BALANCE,
+      data,
+    });
+  }
 
   return (
     <MultiSigWalletContext.Provider
@@ -246,6 +271,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
           updateBalance,
           addTx,
           updateTx,
+          updateBalanceWithdraw,
         }),
         [state]
       )}
@@ -265,6 +291,7 @@ export function Updater() {
     updateBalance,
     addTx,
     updateTx,
+    updateBalanceWithdraw,
   } = useMultiSigWalletContext();
 
   useEffect(() => {
@@ -316,6 +343,9 @@ export function Updater() {
                 executed: true,
                 account,
               });
+              break;
+            case "Withdrawal":
+              updateBalanceWithdraw(log.returnValues);
               break;
             default:
               console.log(log);

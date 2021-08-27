@@ -54,6 +54,7 @@ contract MultiSigWallet {
 
     //Events
     event Deposit(address indexed sender, uint256 amount, uint256 balance);
+    event Withdrawal(address indexed sender, uint256 balance);
     event SubmitTransaction(
         address indexed owner,
         uint256 indexed txIndex,
@@ -201,6 +202,10 @@ contract MultiSigWallet {
         transaction.executed = true;
 
         emit ExecuteTransaction(msg.sender, _txIndex);
+        emit Withdrawal(
+            msg.sender,
+            IERC20Token(cUsdTokenAddress).balanceOf(address(this))
+        );
     }
 
     function revokeConfirmation(uint256 _txIndex)

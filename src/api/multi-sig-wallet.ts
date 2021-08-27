@@ -10,7 +10,7 @@ const ERC20_DECIMALS = 18
 const erc20 = require("../contracts/IERC20Token.abi.json");
 const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-const MWContractAddress = "0xe1556de59f2a39AcA12fc444b247A5a3790bE880"
+const MWContractAddress = "0xB7909B023118D5930E3F020fB614a30021d79DA9"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {
@@ -272,9 +272,18 @@ interface ExecuteTransaction {
   };
 }
 
+interface Withdrawal {
+  event: "Withdrawal";
+  returnValues: {
+    owner: string;
+    balance: string;
+  }
+}
+
 type Log =
   | Deposit
   | SubmitTransaction
   | ConfirmTransaction
   | RevokeConfirmation
-  | ExecuteTransaction;
+  | ExecuteTransaction
+  | Withdrawal;

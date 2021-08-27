@@ -55,6 +55,7 @@ const TransactionActions: React.FC<Props> = ({
     <>
       {tx.isConfirmedByCurrentAccount ? (
         <Button
+          color="grey"
           onClick={(_e) => revokeConfirmation.call(null)}
           disabled={revokeConfirmation.pending}
           loading={revokeConfirmation.pending}
@@ -63,6 +64,7 @@ const TransactionActions: React.FC<Props> = ({
         </Button>
       ) : (
         <Button
+          color="grey"
           onClick={(_e) => confirmTx.call(null)}
           disabled={confirmTx.pending}
           loading={confirmTx.pending}
@@ -72,6 +74,7 @@ const TransactionActions: React.FC<Props> = ({
       )}
       {tx.numConfirmations >= numConfirmationsRequired && (
         <Button
+          color="grey"
           onClick={(_e) => executeTx.call(null)}
           disabled={executeTx.pending}
           loading={executeTx.pending}
