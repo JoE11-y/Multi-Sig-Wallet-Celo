@@ -2,7 +2,7 @@
   "name": "multi-sig-wallet",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://joe11-y.github.io/Multi-Sig-Wallet-Celo/",
+  "homepage": "https://joelaghina.github.io/Multi-Signature-Wallet/",
   "dependencies": {
     "@celo/contractkit": "^1.2.4",
     "@testing-library/jest-dom": "^5.7.0",
