@@ -84,8 +84,9 @@ const CreateTxModal: React.FC<Props> = ({ open, onClose }) => {
           <Form.Field>
             <label>Purpose</label>
             <Form.Input
+              type="text"
               value={inputs.purpose}
-              onChange={(e) => onChange("data", e)}
+              onChange={(e) => onChange("purpose", e)}
             />
           </Form.Field>
         </Form>

@@ -10,7 +10,7 @@ const ERC20_DECIMALS = 18
 const erc20 = require("../contracts/IERC20Token.abi.json");
 const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
 
-const MWContractAddress = "0x34E4d808536251F0f1187A037435D5f8BBD8cA2D"
+const MWContractAddress = "0xe1556de59f2a39AcA12fc444b247A5a3790bE880"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
 
 interface Transaction {

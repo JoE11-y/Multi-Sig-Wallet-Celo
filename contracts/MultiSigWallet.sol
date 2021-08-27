@@ -225,7 +225,7 @@ contract MultiSigWallet {
         returns (
             address to,
             uint256 amount,
-            string memory data,
+            string memory purpose,
             bool executed,
             uint256 numConfirmations
         )

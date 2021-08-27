@@ -234,7 +234,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "data",
+				"name": "purpose",
 				"type": "string"
 			},
 			{
