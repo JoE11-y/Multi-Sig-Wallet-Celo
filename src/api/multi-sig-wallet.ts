@@ -102,6 +102,12 @@ export async function deposit(
   const kit = newKitFromWeb3(web3);
 
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  
+  try {
+    await approve(web3, account, amount)
+  } catch (error) {
+    alert(`⚠️ ${error}.`)
+  }
   // eslint-disable-next-line
   const result = await contract.methods
     .deposit(amount)

@@ -116,10 +116,9 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
         },
         ...state.transactions,
       ];
-
       return {
         ...state,
-        transactionCount: state.transactionCount + 1,
+        transactionCount: Number(state.transactionCount) + 1,
         transactions,
       };
     }
@@ -139,11 +138,11 @@ function reducer(state: State = INITIAL_STATE, action: Action) {
           }
           if (data.confirmed !== undefined) {
             if (data.confirmed) {
-              updatedTx.numConfirmations += 1;
+              updatedTx.numConfirmations = Number(updatedTx.numConfirmations) + 1;
               updatedTx.isConfirmedByCurrentAccount =
                 data.owner === data.account;
             } else {
-              updatedTx.numConfirmations -= 1;
+              updatedTx.numConfirmations = Number(updatedTx.numConfirmations) - 1;
               if (data.owner === data.account) {
                 updatedTx.isConfirmedByCurrentAccount = false;
               }
