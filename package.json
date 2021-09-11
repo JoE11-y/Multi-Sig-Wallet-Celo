@@ -1,0 +1,54 @@
+{
+  "name": "multi-sig-wallet",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://joe11-y.github.io/Multi-Sig-Wallet-Celo/",
+  "dependencies": {
+    "@celo/contractkit": "^1.2.4",
+    "@testing-library/jest-dom": "^5.7.0",
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^10.3.1",
+    "@truffle/contract": "^4.3.31",
+    "@types/jest": "^25.2.2",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "bignumber.js": "^9.0.0",
+    "bn.js": "^5.1.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.2",
+    "typescript": "^3.9.2",
+    "web3": "^1.3.6"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.1",
+    "customize-cra": "^1.0.0",
+    "gh-pages": "^3.2.3",
+    "react-app-rewired": "^2.1.8"
+  }
+}
