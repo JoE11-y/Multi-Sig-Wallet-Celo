@@ -1,17 +1,25 @@
 import Web3 from "web3";
-import { AbiItem } from "@celo/utils/node_modules/web3-utils";
+//import { AbiItem } from "@celo/utils/node_modules/web3-utils";
 import { newKitFromWeb3 } from "@celo/contractkit";
 import BigNumber from "bignumber.js";
+import erc20_Json from '../contracts/IERC20Token.json';
+import multiSigWallet_Json from '../contracts/MultiSigwallet.json'
+
 // eslint-disable-next-line
 import { updateTypeAliasDeclaration } from "typescript";
 //import { values } from "lodash";
 
 const ERC20_DECIMALS = 18
-const erc20 = require("../contracts/IERC20Token.abi.json");
-const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
+//const erc20 = require("../contracts/IERC20Token.abi.json");
+//const multiSigWallet =  require( "../contracts/MultiSigWallet.abi.json");
+const TruffleContract = require("@truffle/contract")
 
 const MWContractAddress = "0xB7909B023118D5930E3F020fB614a30021d79DA9"
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+
+const MultiSigWalletJson = TruffleContract(multiSigWallet_Json);
+
+const IERC20Json = TruffleContract(erc20_Json);
 
 interface Transaction {
   txIndex: number;
@@ -40,7 +48,7 @@ async function approve(web3: Web3, account: string, params: { amount: number }) 
 
   const kit = newKitFromWeb3(web3);
 
-  const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
+  const cUSDContract = new kit.web3.eth.Contract(IERC20Json.abi, cUSDContractAddress);
 
   // eslint-disable-next-line
   const result = await cUSDContract.methods
@@ -52,7 +60,7 @@ async function approve(web3: Web3, account: string, params: { amount: number }) 
 export async function get(web3: Web3, account: string): Promise<GetResponse> {
   const kit = newKitFromWeb3(web3);
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress)
 
   const balance = await contract.methods.getBalance().call();
 
@@ -108,7 +116,7 @@ export async function deposit(
 
   const kit = newKitFromWeb3(web3);
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress);
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress);
   
   let isApproved = true;
 
@@ -142,7 +150,7 @@ export async function submitTx(
   const kit = newKitFromWeb3(web3);
   const { to, amount, purpose } = params;
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress)
 
   try {
     
@@ -166,7 +174,7 @@ export async function confirmTx(
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress)
 
   try {
     // eslint-disable-next-line
@@ -188,7 +196,7 @@ export async function revokeConfirmation(
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress)
 
   try {
     // eslint-disable-next-line
@@ -210,7 +218,7 @@ export async function executeTx(
   const kit = newKitFromWeb3(web3);
   const { txIndex } = params;
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(MultiSigWalletJson.abi, MWContractAddress)
 
   try {
     // eslint-disable-next-line
@@ -229,7 +237,7 @@ export function subscribe(
 ) {
   const kit = newKitFromWeb3(web3);
 
-  const multiSig = new kit.web3.eth.Contract(multiSigWallet as AbiItem, address);
+  const multiSig = new kit.web3.eth.Contract(MultiSigWalletJson.abi, address);
 
   const res = multiSig.events.allEvents((error: Error, log: Log) => {
     if (error) {
