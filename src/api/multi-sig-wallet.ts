@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { AbiItem } from "web3-utils";
+import { AbiItem } from "@celo/utils/node_modules/web3-utils";
 import { newKitFromWeb3 } from "@celo/contractkit";
 import BigNumber from "bignumber.js";
 // eslint-disable-next-line
