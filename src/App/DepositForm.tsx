@@ -35,7 +35,6 @@ const DepositForm: React.FC<Props> = () => {
       alert("No web3");
       return;
     }
-
     const amount = Number(input)
     const zero = Number(0)
     

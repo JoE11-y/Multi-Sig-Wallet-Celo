@@ -98,7 +98,6 @@ export async function deposit(
   }
 ) {
   const { amount } = params;
-
   const _amount = new BigNumber(amount).shiftedBy(ERC20_DECIMALS);
 
   const kit = newKitFromWeb3(web3);
