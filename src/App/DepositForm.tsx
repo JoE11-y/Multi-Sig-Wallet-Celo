@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import Web3 from "web3";
-import BigNumber from "bignumber.js";
 import { Button, Form } from "semantic-ui-react";
 import { useWeb3Context } from "../contexts/Web3";
 import useAsync from "../components/useAsync";
 import { deposit } from "../api/multi-sig-wallet";
-const ERC20_DECIMALS = 18
 interface Props {}
 
 interface DepositParams {
   web3: Web3;
   account: string;
-  amount: BigNumber;
+  amount: number;
 }
 
 const DepositForm: React.FC<Props> = () => {
@@ -38,10 +36,10 @@ const DepositForm: React.FC<Props> = () => {
       return;
     }
 
-    const amount = new BigNumber(input).shiftedBy(ERC20_DECIMALS);
-    const zero = new BigNumber(0).shiftedBy(ERC20_DECIMALS);
+    const amount = Number(input)
+    const zero = Number(0)
     
-    if (amount.gt(zero)) {
+    if (amount > zero) {
       const { error } = await call({
         web3,
         account,

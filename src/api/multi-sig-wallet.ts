@@ -94,24 +94,32 @@ export async function deposit(
   web3: Web3,
   account: string,
   params: {
-    amount: BigNumber;
+    amount: number;
   }
 ) {
   const { amount } = params;
 
+  const _amount = new BigNumber(amount).shiftedBy(ERC20_DECIMALS);
+
   const kit = newKitFromWeb3(web3);
 
-  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress)
+  const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress);
   
+  let isApproved = true;
   try {
-    await approve(web3, account, amount)
+    await approve(web3, account, _amount)
   } catch (error) {
     alert(`⚠️ ${error}.`)
+    isApproved = false;
   }
-  // eslint-disable-next-line
-  const result = await contract.methods
-    .deposit(amount)
+  if(isApproved){
+    // eslint-disable-next-line
+    const result = await contract.methods
+    .deposit(_amount)
     .send({ from: account})
+  }else{
+    alert('Please approve contract to be able to spend cUSD from your wallet')
+  }
 }
 
 export async function submitTx(
