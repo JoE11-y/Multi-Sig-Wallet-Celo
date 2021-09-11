@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Multi-Sig-Wallet-Celo/static/css/main.94c1e3df.chunk.css",
-    "main.js": "/Multi-Sig-Wallet-Celo/static/js/main.43d7f037.chunk.js",
-    "main.js.map": "/Multi-Sig-Wallet-Celo/static/js/main.43d7f037.chunk.js.map",
+    "main.js": "/Multi-Sig-Wallet-Celo/static/js/main.dcc7c9a8.chunk.js",
+    "main.js.map": "/Multi-Sig-Wallet-Celo/static/js/main.dcc7c9a8.chunk.js.map",
     "runtime-main.js": "/Multi-Sig-Wallet-Celo/static/js/runtime-main.972a27cb.js",
     "runtime-main.js.map": "/Multi-Sig-Wallet-Celo/static/js/runtime-main.972a27cb.js.map",
     "static/css/2.5b0b8c06.chunk.css": "/Multi-Sig-Wallet-Celo/static/css/2.5b0b8c06.chunk.css",
     "static/js/2.9a05d3b3.chunk.js": "/Multi-Sig-Wallet-Celo/static/js/2.9a05d3b3.chunk.js",
     "static/js/2.9a05d3b3.chunk.js.map": "/Multi-Sig-Wallet-Celo/static/js/2.9a05d3b3.chunk.js.map",
     "index.html": "/Multi-Sig-Wallet-Celo/index.html",
-    "precache-manifest.76618a2ecbd4288faf24beea6b912254.js": "/Multi-Sig-Wallet-Celo/precache-manifest.76618a2ecbd4288faf24beea6b912254.js",
+    "precache-manifest.1d8451c994adcfd6a20d935115e042ab.js": "/Multi-Sig-Wallet-Celo/precache-manifest.1d8451c994adcfd6a20d935115e042ab.js",
     "service-worker.js": "/Multi-Sig-Wallet-Celo/service-worker.js",
     "static/css/2.5b0b8c06.chunk.css.map": "/Multi-Sig-Wallet-Celo/static/css/2.5b0b8c06.chunk.css.map",
     "static/css/main.94c1e3df.chunk.css.map": "/Multi-Sig-Wallet-Celo/static/css/main.94c1e3df.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.5b0b8c06.chunk.css",
     "static/js/2.9a05d3b3.chunk.js",
     "static/css/main.94c1e3df.chunk.css",
-    "static/js/main.43d7f037.chunk.js"
+    "static/js/main.dcc7c9a8.chunk.js"
   ]
 }
