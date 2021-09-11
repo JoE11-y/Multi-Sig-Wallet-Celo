@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/Multi-Sig-Wallet-Celo/static/css/main.94c1e3df.chunk.css",
-    "main.js": "/Multi-Sig-Wallet-Celo/static/js/main.89581b87.chunk.js",
-    "main.js.map": "/Multi-Sig-Wallet-Celo/static/js/main.89581b87.chunk.js.map",
+    "main.js": "/Multi-Sig-Wallet-Celo/static/js/main.f7476740.chunk.js",
+    "main.js.map": "/Multi-Sig-Wallet-Celo/static/js/main.f7476740.chunk.js.map",
     "runtime-main.js": "/Multi-Sig-Wallet-Celo/static/js/runtime-main.972a27cb.js",
     "runtime-main.js.map": "/Multi-Sig-Wallet-Celo/static/js/runtime-main.972a27cb.js.map",
     "static/css/2.5b0b8c06.chunk.css": "/Multi-Sig-Wallet-Celo/static/css/2.5b0b8c06.chunk.css",
-    "static/js/2.16943f1c.chunk.js": "/Multi-Sig-Wallet-Celo/static/js/2.16943f1c.chunk.js",
-    "static/js/2.16943f1c.chunk.js.map": "/Multi-Sig-Wallet-Celo/static/js/2.16943f1c.chunk.js.map",
+    "static/js/2.3e4a2282.chunk.js": "/Multi-Sig-Wallet-Celo/static/js/2.3e4a2282.chunk.js",
+    "static/js/2.3e4a2282.chunk.js.map": "/Multi-Sig-Wallet-Celo/static/js/2.3e4a2282.chunk.js.map",
     "index.html": "/Multi-Sig-Wallet-Celo/index.html",
-    "precache-manifest.8199096cfc471915a5ac43e1985d1965.js": "/Multi-Sig-Wallet-Celo/precache-manifest.8199096cfc471915a5ac43e1985d1965.js",
+    "precache-manifest.2d8c844b642e8249cb2f4414d9123f88.js": "/Multi-Sig-Wallet-Celo/precache-manifest.2d8c844b642e8249cb2f4414d9123f88.js",
     "service-worker.js": "/Multi-Sig-Wallet-Celo/service-worker.js",
     "static/css/2.5b0b8c06.chunk.css.map": "/Multi-Sig-Wallet-Celo/static/css/2.5b0b8c06.chunk.css.map",
     "static/css/main.94c1e3df.chunk.css.map": "/Multi-Sig-Wallet-Celo/static/css/main.94c1e3df.chunk.css.map",
-    "static/js/2.16943f1c.chunk.js.LICENSE.txt": "/Multi-Sig-Wallet-Celo/static/js/2.16943f1c.chunk.js.LICENSE.txt",
+    "static/js/2.3e4a2282.chunk.js.LICENSE.txt": "/Multi-Sig-Wallet-Celo/static/js/2.3e4a2282.chunk.js.LICENSE.txt",
     "static/media/semantic.min.css": "/Multi-Sig-Wallet-Celo/static/media/outline-icons.ef60a4f6.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.972a27cb.js",
     "static/css/2.5b0b8c06.chunk.css",
-    "static/js/2.16943f1c.chunk.js",
+    "static/js/2.3e4a2282.chunk.js",
     "static/css/main.94c1e3df.chunk.css",
-    "static/js/main.89581b87.chunk.js"
+    "static/js/main.f7476740.chunk.js"
   ]
 }
