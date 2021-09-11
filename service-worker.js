@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Multi-Sig-Wallet-Celo/precache-manifest.b2077084d55a4af16309c5854954350a.js"
+  "/Multi-Sig-Wallet-Celo/precache-manifest.e2adbabae2beceb65f10e06fd357bb0d.js"
 );
 
 self.addEventListener('message', (event) => {

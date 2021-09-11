@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5cbae57ae62499255f95e4054d87f3da",
+    "revision": "68add8afda4c4c0266ea417e8d85d38c",
     "url": "/Multi-Sig-Wallet-Celo/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Multi-Sig-Wallet-Celo/static/css/2.5b0b8c06.chunk.css"
   },
   {
-    "revision": "898c417169b52d258cc7",
+    "revision": "466207514282f77e7d52",
     "url": "/Multi-Sig-Wallet-Celo/static/css/main.94c1e3df.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Multi-Sig-Wallet-Celo/static/js/2.7cd65021.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "898c417169b52d258cc7",
-    "url": "/Multi-Sig-Wallet-Celo/static/js/main.1dbc797d.chunk.js"
+    "revision": "466207514282f77e7d52",
+    "url": "/Multi-Sig-Wallet-Celo/static/js/main.9ccb891f.chunk.js"
   },
   {
     "revision": "293f9d3df72c7116b4c0",
