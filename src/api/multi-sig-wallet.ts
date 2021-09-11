@@ -36,6 +36,8 @@ async function approve(web3: Web3, account: string, params: { amount: number }) 
 
   const { amount } = params;
   const price = new BigNumber(amount).shiftedBy(ERC20_DECIMALS);
+
+  alert(price);
   
   const kit = newKitFromWeb3(web3);
 
