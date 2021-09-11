@@ -38,14 +38,14 @@ async function approve(web3: Web3, account: string, params: { amount: number }) 
   const price = new BigNumber(amount).shiftedBy(ERC20_DECIMALS);
 
   alert(price);
-  
+
   const kit = newKitFromWeb3(web3);
 
   const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
 
   // eslint-disable-next-line
   const result = await cUSDContract.methods
-    .approve(MWContractAddress, price)
+    .approve(MWContractAddress, new BigNumber(price))
     .send({ from: account})
   return result
 }
