@@ -32,7 +32,7 @@ interface GetResponse {
   transactions: Transaction[];
 }
 
-export async function approve(web3: Web3, account: string, price: BigNumber ) {
+async function approve(web3: Web3, account: string, price: BigNumber ) {
   const kit = newKitFromWeb3(web3);
 
   const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
@@ -105,12 +105,14 @@ export async function deposit(
   const contract = new kit.web3.eth.Contract(multiSigWallet as AbiItem, MWContractAddress);
   
   let isApproved = true;
+  
   try {
     await approve(web3, account, _amount)
   } catch (error) {
     alert(`⚠️ ${error}.`)
     isApproved = false;
   }
+
   if(isApproved){
     // eslint-disable-next-line
     const result = await contract.methods
