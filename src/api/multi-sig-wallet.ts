@@ -32,14 +32,15 @@ interface GetResponse {
   transactions: Transaction[];
 }
 
-async function approve(web3: Web3, account: string, amount: number) {
+async function approve(web3: Web3, account: string, params: { amount: number }) {
 
+  const { amount } = params;
   const price = new BigNumber(amount).shiftedBy(ERC20_DECIMALS);
   
   const kit = newKitFromWeb3(web3);
 
   const cUSDContract = new kit.web3.eth.Contract(erc20 as AbiItem, cUSDContractAddress);
-  
+
   // eslint-disable-next-line
   const result = await cUSDContract.methods
     .approve(MWContractAddress, price)
@@ -111,7 +112,7 @@ export async function deposit(
   let isApproved = true;
 
   try {
-    await approve(web3, account, amount)
+    await approve(web3, account, { amount })
   } catch (error) {
     alert(`⚠️ ${error}.`)
     isApproved = false;
